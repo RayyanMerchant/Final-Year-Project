@@ -51,8 +51,20 @@ with warnings.catch_warnings():
                 is_recognized = [closest_distances[0][i][0] <= 0.5 for i in range(len(face_locations))]
 
                 # predict classes and cull classifications that are not with high confidence
-                predictions = [(le.inverse_transform(int(pred)).title(), loc) if rec else ("Unknown", loc) for pred, loc, rec in
-                               zip(clf.predict(face_encodings), face_locations, is_recognized)]
+                # predictions = [(le.inverse_transform(int(pred)).title(), loc) if rec else ("Unknown", loc) for pred, loc, rec in
+                #                zip(clf.predict(face_encodings), face_locations, is_recognized)]
+
+
+                predictions = list()
+                for pred, loc, rec in zip(clf.predict(face_encodings), face_locations, is_recognized):
+                    if rec:
+                        le.inverse_transform([0])
+                        lst = [int(pred)]
+                        predictions.append((le.inverse_transform(lst), loc))
+                    else:
+                        predictions.append(("Unknown", loc))
+
+
 
             # # Predict the unknown faces in the video frame
             # for face_encoding in face_encodings:
@@ -88,6 +100,8 @@ with warnings.catch_warnings():
             # Draw a label with a name below the face
             cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
             font = cv2.FONT_HERSHEY_DUPLEX
+            if not isinstance(name, str):
+                name = name[0]
             cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
 
         # Display the resulting image

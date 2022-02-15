@@ -1,6 +1,8 @@
 import scipy.misc
 import dlib
 import numpy as np
+import imageio
+from PIL import Image
 
 face_detector = dlib.get_frontal_face_detector()
 
@@ -65,19 +67,26 @@ def load_image_file(filename, mode='RGB'):
     :param mode: format to convert the image to. Only 'RGB' (8-bit RGB, 3 channels) and 'L' (black and white) are supported.
     :return: image contents as numpy array
     """
-    img = scipy.misc.imread(filename)
+    img = imageio.imread(filename)
+    pilImage =  Image.open(filename)
 
     # If very large size image, Resize the image
     if img.shape[0] > 800:
         baseheight = 500
         w = (baseheight / img.shape[0])
         p = int(img.shape[1] * w)
-        img = scipy.misc.imresize(img, (baseheight, p))
+        # img = imageio.imresize(img, (baseheight, p))
+        pilImage = pilImage.resize((baseheight,p), Image.ANTIALIAS)
+        # pilImage.save(filename)
+        return pilImage
     elif img.shape[1] > 800:
         baseheight = 500
         w = (baseheight / img.shape[1])
         p = int(img.shape[0] * w)
-        img = scipy.misc.imresize(img, (p, baseheight))
+        # img = imageio.imresize(img, (p, baseheight))
+        pilImage = pilImage.resize((baseheight,p), Image.ANTIALIAS)
+        # pilImage.save(filename)
+        return pilImage
 
     return img
 

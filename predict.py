@@ -50,10 +50,21 @@ for image_path in get_prediction_images(prediction_dir):
     is_recognized = [closest_distances[0][i][0] <= 0.5 for i in range(len(X_faces_loc))]
 
     # predict classes and cull classifications that are not with high confidence
-    predictions = [(le.inverse_transform(int(pred)).title(), loc) if rec else ("Unknown", loc) for pred, loc, rec in
-                   zip(clf.predict(faces_encodings), X_faces_loc, is_recognized)]
-
-    print(predictions)
+    # predictions = [(le.inverse_transform(int(pred)).title(), loc) if rec else ("Unknown", loc) for pred, loc, rec in
+                #    zip(clf.predict(faces_encodings), X_faces_loc, is_recognized)]
+    predictions = []
+    for pred, loc, rec in zip(clf.predict(faces_encodings), X_faces_loc, is_recognized):
+        if not rec:
+            predictions.append(("Unknown", loc))
+        else:
+            lst = [int(pred)]
+            a = le.inverse_transform(lst)
+            predictions.append((a, loc))
+    
+    name = predictions[0][0]
+    if not isinstance(name, str):
+        name = name[0]
+    print(name)
 
     # for face_encoding in faces_encodings:
     #     face_encoding = face_encoding.reshape(1, -1)
