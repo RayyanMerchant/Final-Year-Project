@@ -36,20 +36,21 @@ python webcam.py
 
 
 
-
+Important Links:
 
 https://www.youtube.com/watch?v=ixcNKeszA9g
 
+https://learnopencv.com/read-write-and-display-a-video-using-opencv-cpp-python/
+
+https://www.delftstack.com/howto/numpy/save-numpy-array-as-image/
+
+206 seconds
 
 
 
 
 
-
-
-
-
-
+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
 
 
 
